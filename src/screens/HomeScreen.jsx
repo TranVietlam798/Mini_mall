@@ -56,7 +56,7 @@ const HomeScreen = () => {
                 <View style={styles.Categories}>
                     {
                         categories.map((category, index) => [1, 2, 3, 4].includes(category.id) &&
-                            <Categories key={index} name={category.name} setCategoryImage={setCategoryImage} image={category.image} categoryImage={categoryImage} />
+                            <Categories key={index} name={category.name} setCategoryImage={setCategoryImage} image={category.image} categoryImage={categoryImage} id={category.id} />
 
                         )
                     }
@@ -69,7 +69,20 @@ const HomeScreen = () => {
 
                 {/* product */}
 
-                
+                <View style={styles.ProductContainer}>
+                    <Text style={styles.ProductsHeader}>Product</Text>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignItems: 'flex-end'
+                    }}>
+                        {
+                            products.map((item, index) => <Item key={index} title={item.title} image={item.images[1]} />)
+                        }
+                    </View>
+
+                </View>
 
             </SafeAreaView>
         </ScrollView>
@@ -86,6 +99,9 @@ const Item = ({ title, image }) => (
 );
 
 const styles = StyleSheet.create({
+    item: {
+        width: '50%' // is 50% of container width
+    },
     ProductsHeader: {
 
     },
