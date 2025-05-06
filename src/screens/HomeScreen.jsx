@@ -1,21 +1,21 @@
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Categories from '../components/Categories'
 import axios from 'axios'
+import ProductItem from '../components/ProductItem'
+import Promotion from '../constans/Promotion'
 
 const HomeScreen = () => {
     const [categories, setcategories] = useState([])
-    const [categoryImage, setCategoryImage] = useState("https://i.imgur.com/QkIa5tT.jpeg")
+    const [selectedCategory, SetSelectedCategory] = useState("furniture")
     const [products, setProducts] = useState([])
 
     useEffect(() => {
-        axios.get('https://api.escuelajs.co/api/v1/categories')
+        axios.get('https://dummyjson.com/products/categories')
             .then(function (response) {
                 console.log(response.data);
                 setcategories(response.data)
-                console.log(response.data[0].image);
 
-                setCategoryImage(response.data[0].image)
 
             })
             .catch(function (error) {
@@ -26,16 +26,17 @@ const HomeScreen = () => {
     }, [])
 
     useEffect(() => {
-        const data = []
-        axios.get('https://api.escuelajs.co/api/v1/products')
+        const url = 'https://dummyjson.com/products/category/' + selectedCategory
+        axios.get(url)
             .then(function (response) {
                 const data = []
 
-                response.data.map((product) => {
-                    product.category.image === categoryImage && data.push(product)
-                })
-                console.log(data);
-                setProducts(data)
+                // response.data.map((product) => {
+                // //     // product.category.image === selectedCategory && 
+                // data.push(product)
+                // })
+                console.log(response.data.products);
+                setProducts(response.data.products)
 
 
             })
@@ -44,7 +45,7 @@ const HomeScreen = () => {
                 console.log(error);
             })
 
-    }, [categoryImage])
+    }, [selectedCategory])
 
     return (
         <ScrollView>
@@ -55,30 +56,30 @@ const HomeScreen = () => {
                 {/* category */}
                 <View style={styles.Categories}>
                     {
-                        categories.map((category, index) => [1, 2, 3, 4].includes(category.id) &&
-                            <Categories key={index} name={category.name} setCategoryImage={setCategoryImage} image={category.image} categoryImage={categoryImage} id={category.id} />
+                        categories.map((category, index) => ["Laptops", "Womens Dresses", "Furniture", "Womens Shoes"].includes(category.name) &&
+                            <Categories key={index} name={category.name} SetSelectedCategory={SetSelectedCategory} selectedCategory={selectedCategory} slug={category.slug} />
 
                         )
                     }
                 </View>
 
 
-                {/* image category */}
-                <Image style={styles.ImageCategory} source={{ uri: categoryImage }} />
+                {/* Promotion */}
+                {Promotion.map((item, index) => 
+                    item.slug === selectedCategory && <Image style={styles.ImageCategory} source={{ uri: item.image }} />
+                
+
+                )
+                }
 
 
                 {/* product */}
 
                 <View style={styles.ProductContainer}>
                     <Text style={styles.ProductsHeader}>Product</Text>
-                    <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'flex-end'
-                    }}>
+                    <View style={styles.ProductItemContainer}>
                         {
-                            products.map((item, index) => <Item key={index} title={item.title} image={item.images[1]} />)
+                            products.map((item, index) => <ProductItem key={index} title={item.title} image={item.thumbnail} price={item.price} />)
                         }
                     </View>
 
@@ -91,18 +92,29 @@ const HomeScreen = () => {
 
 export default HomeScreen
 
-const Item = ({ title, image }) => (
-    <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-        <Image style={{ height: '200', width: '200', resizeMode: 'contain' }} source={{ uri: image }} />
-    </View>
-);
+
 
 const styles = StyleSheet.create({
+    ProductItemContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start'
+    },
     item: {
-        width: '50%' // is 50% of container width
+        // flex:1,
+        width: '44%', // is 50% of container width
+        alignItems: 'center',
+
+        marginTop: '5%',
+        marginLeft: '4%'
     },
     ProductsHeader: {
+        fontSize: 28,
+        width: '100%',
+        marginVertical: 20,
+        paddingHorizontal: 20,
+        fontWeight: '600'
 
     },
     ProductContainer: {
@@ -114,8 +126,8 @@ const styles = StyleSheet.create({
     },
     Header: {
         color: '#000000',
-        fontSize: '20',
-        fontWeight: 'bold',
+        fontSize: '30',
+        fontWeight: '900',
         textAlign: 'center',
         width: '100%',
 
@@ -129,7 +141,7 @@ const styles = StyleSheet.create({
     ImageCategory: {
         height: 150,
         width: "80%",
-        resizeMode: 'stretch',
+        resizeMode: 'cover',
         marginTop: '8%',
         borderRadius: "5%"
     }

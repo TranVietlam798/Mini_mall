@@ -1,43 +1,43 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-const Categories = ({ name, setCategoryImage, image, categoryImage, id }) => {
+const Categories = ({ name, SetSelectedCategory, slug, selectedCategory }) => {
 
 
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 style={[styles.btnContainer]}
-                onPress={() => setCategoryImage(image)}
+                onPress={() => SetSelectedCategory(slug)}
             >
-                <View style={[styles.iconContainer, image === categoryImage && styles.selected]}>
+                <View style={[styles.iconContainer, slug === selectedCategory && styles.selected]}>
                     {
-                        id == 1 && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Clothes.png')} />
+                        name === 'Womens Dresses' && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Clothes.png')} />
                     }
                     {
-                        id === 3 && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Furniture.png')} />
+                        name === 'Furniture' && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Furniture.png')} />
                     }
                     {
-                        id === 4 && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Shoes.png')} />
+                        name === 'Womens Shoes' && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Shoes.png')} />
                     }
                     {
-                        id === 2 && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Miscellaneous.png')} />
+                        name === 'Laptops' && <Image style={{ height: '20', width: '20', resizeMode: 'contain' }} source={require('../assets/icon/Miscellaneous.png')} />
                     }
                 </View>
 
             </TouchableOpacity>
 
             {
-                id == 1 && <Text>Clothes</Text>
+                name === 'Womens Dresses' && <Text>Clothes</Text>
             }
             {
-                id === 3 && <Text>Furniture</Text>
+                name === 'Furniture' && <Text>Furniture</Text>
             }
             {
-                id === 4 && <Text>Shoes</Text>
+                name === 'Womens Shoes' && <Text>Shoes</Text>
             }
             {
-                id === 2 && <Text>Electronics</Text>
+                name === 'Laptops' && <Text>Electronics</Text>
             }
 
         </View>

@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainScreen from './BottomTabBar'
 import CheckoutScreen from '../screens/CheckoutScreen'
+import ProductInfor from '../screens/ProductInfor'
 
 const StackNavigator = () => {
     const stack = createNativeStackNavigator();
@@ -20,6 +21,13 @@ const StackNavigator = () => {
                 <stack.Screen
                     name='Checkout'
                     component={CheckoutScreen}
+                />
+                <stack.Screen
+                    name='Infor'
+                    component={ProductInfor}
+                    options={{
+                        headerShown: false
+                    }}
                 />
 
 
