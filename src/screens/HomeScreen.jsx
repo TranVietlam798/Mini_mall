@@ -7,20 +7,18 @@ import Promotion from '../constans/Promotion'
 
 const HomeScreen = () => {
     const [categories, setcategories] = useState([])
-    const [selectedCategory, SetSelectedCategory] = useState("furniture")
+    const [selectedCategory, SetSelectedCategory] = useState("")
     const [products, setProducts] = useState([])
 
     useEffect(() => {
         axios.get('https://dummyjson.com/products/categories')
             .then(function (response) {
-                console.log(response.data);
                 setcategories(response.data)
-
-
-            })
+             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+
             })
 
     }, [])
@@ -29,20 +27,12 @@ const HomeScreen = () => {
         const url = 'https://dummyjson.com/products/category/' + selectedCategory
         axios.get(url)
             .then(function (response) {
-                const data = []
-
-                // response.data.map((product) => {
-                // //     // product.category.image === selectedCategory && 
-                // data.push(product)
-                // })
-                console.log(response.data.products);
                 setProducts(response.data.products)
-
-
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+
             })
 
     }, [selectedCategory])
@@ -65,9 +55,9 @@ const HomeScreen = () => {
 
 
                 {/* Promotion */}
-                {Promotion.map((item, index) => 
-                    item.slug === selectedCategory && <Image style={styles.ImageCategory} source={{ uri: item.image }} />
-                
+                {Promotion.map((item, index) =>
+                    item.slug === selectedCategory && <Image key={index} style={styles.Promotion} source={{ uri: item.image }} />
+
 
                 )
                 }
@@ -75,15 +65,18 @@ const HomeScreen = () => {
 
                 {/* product */}
 
-                <View style={styles.ProductContainer}>
-                    <Text style={styles.ProductsHeader}>Product</Text>
-                    <View style={styles.ProductItemContainer}>
-                        {
-                            products.map((item, index) => <ProductItem key={index} title={item.title} image={item.thumbnail} price={item.price} />)
-                        }
-                    </View>
-
+                {/* <View style={styles.ProductsContainer}> */}
+                <Text style={styles.ProductsHeader}>Product</Text>
+                <View style={styles.ProductsContainer}>
+                    {
+                        products.map((item, index) =>
+                            <View key={index} style={styles.ProductItemContainer}>
+                                <ProductItem product={item} />
+                            </View>)
+                    }
                 </View>
+
+                {/* </View> */}
 
             </SafeAreaView>
         </ScrollView>
@@ -96,10 +89,11 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
     ProductItemContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start'
+        width: '44%', // is 50% of container width
+        alignItems: 'center',
+
+        marginTop: '5%',
+        marginLeft: '4%'
     },
     item: {
         // flex:1,
@@ -117,8 +111,11 @@ const styles = StyleSheet.create({
         fontWeight: '600'
 
     },
-    ProductContainer: {
-        width: "100%"
+    ProductsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start'
     },
     Container: {
         // flex: 1,
@@ -138,10 +135,10 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: '5%',
     },
-    ImageCategory: {
-        height: 150,
-        width: "80%",
-        resizeMode: 'cover',
+    Promotion: {
+        height: 200,
+        width: "90%",
+        resizeMode: 'stretch',
         marginTop: '8%',
         borderRadius: "5%"
     }

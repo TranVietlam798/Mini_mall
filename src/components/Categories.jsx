@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react'
 
 const Categories = ({ name, SetSelectedCategory, slug, selectedCategory }) => {
 
+    useEffect(() => {
+        selectedCategory === '' && SetSelectedCategory(slug)
+    }, [])
+
 
     return (
         <View style={styles.container}>
