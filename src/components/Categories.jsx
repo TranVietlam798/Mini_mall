@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 20,
-        borderColor: '#00000051',
+        borderColor: '#CF6212',
         borderWidth: 1,
         marginBottom: '10%'
     },
@@ -75,8 +75,6 @@ const styles = StyleSheet.create({
 
     },
     selected: {
-        borderColor: '#00000051',
-        borderWidth: 1,
-        backgroundColor: '#0000002d'
+        backgroundColor: '#CF6212'
     }
 })

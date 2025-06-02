@@ -4,20 +4,24 @@ import Categories from '../components/Categories'
 import axios from 'axios'
 import ProductItem from '../components/ProductItem'
 import Promotion from '../constans/Promotion'
+import { useIsFocused } from '@react-navigation/native'
+import { useContextState } from '../Contexts/StateContext'
 
 const HomeScreen = () => {
     const [categories, setcategories] = useState([])
     const [selectedCategory, SetSelectedCategory] = useState("")
     const [products, setProducts] = useState([])
 
+
+
     useEffect(() => {
         axios.get('https://dummyjson.com/products/categories')
             .then(function (response) {
                 setcategories(response.data)
-             })
+            })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                consconsole.log(error);
 
             })
 
@@ -31,7 +35,7 @@ const HomeScreen = () => {
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                // consconsole.log(error);
 
             })
 
@@ -46,7 +50,7 @@ const HomeScreen = () => {
                 {/* category */}
                 <View style={styles.Categories}>
                     {
-                        categories.map((category, index) => ["Laptops", "Womens Dresses", "Furniture", "Womens Shoes"].includes(category.name) &&
+                        categories.map((category, index) => ["Womens Dresses", "Furniture", "Womens Shoes", "Laptops"].includes(category.name) &&
                             <Categories key={index} name={category.name} SetSelectedCategory={SetSelectedCategory} selectedCategory={selectedCategory} slug={category.slug} />
 
                         )

@@ -1,27 +1,31 @@
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ProductItem from '../components/ProductItem'
 import axios from 'axios'
 import NavigationHeader from '../components/NavigationHeader'
+import { useContextState } from '../Contexts/StateContext'
 
 const ProductInfor = ({ route }) => {
+    const { state, dispatch } = useContextState()
+
+
     const product = (route.params.product)
     const [similarProduct, setSimilarProduct] = useState([])
     const [showDecription, setShowDecription] = useState(false)
-    const [showSimilarProduct, setShowSimilarProduct] = useState(false)
+    const [showSimilarProduct, setShowSimilarProduct] = useState(true)
+    const [flat1, SetFlat1] = useState(true)
+
+
+
+
 
     useEffect(() => {
+
         const url = 'https://dummyjson.com/products/category/' + product.category
         axios.get(url)
             .then(function (response) {
                 const data = []
-
-                // response.data.map((product) => {
-                // //     // product.category.image === selectedCategory && 
-                // data.push(product)
-                // })
-                console.log(response.data.products);
                 response.data.products.map((item) => {
                     item.title !== product.title && data.length < 5 && data.push(item)
                 })
@@ -30,17 +34,94 @@ const ProductInfor = ({ route }) => {
 
 
             })
+
             .catch(function (error) {
                 // handle error
             })
+
     }, [product])
 
 
+    const scrollViewRef = useRef(null);
+    const flatListRef = useRef(null);
+
+    const scrollToStart = () => {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+        flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+
+    };
+
+    const scrollToEnd = () => {
+        setTimeout(() => {
+
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 0);
+
+    };
+
+
+    const addToCart = () => {
+        let term = false;
+        const url = 'https://api.escuelajs.co/api/v1/categories/' + String(state.id) + '/products'
+        axios.get(url)
+            .then(function (response) {
+                const products = []
+                response.data.map((item) => {
+                    item.title.includes('LamTran') ? products.push(item) : {};
+
+                })
+                products.map((item) => {
+                    if (item.title === ('LamTran' + product.title)) {
+                        const url = 'https://api.escuelajs.co/api/v1/products/' + item.id
+                        const quantityProductInCart = Number(item.description) + 1
+                        axios.put(url, {
+                            "description": String(quantityProductInCart),
+                            "images": item.images
+                        })
+                            .then(response => {
+                                console.log('Update successful:');
+                                SetFlat1(!flat1)
+                                dispatch({ type: 'SET_QUANTYTI', payload: state.quantityProductInCart + 1 });
+
+                            })
+                            .catch(error => {
+                                consconsole.log('Error updating:', error);
+                            });
+                        term = true;
+                        return;
+                    }
+
+                })
+                if (term) return
+                axios.post('https://api.escuelajs.co/api/v1/products/', {
+                    "title": "LamTran" + product.title,
+                    "price": product.price,
+                    "description": '1',
+                    "categoryId": state.id,
+                    "images": [product.thumbnail]
+                })
+                    .then(response => {
+                        console.log('add successful:');
+                        SetFlat1(!flat1)
+                        dispatch({ type: 'SET_QUANTYTI', payload: state.quantityProductInCart + 1 });
+
+                    })
+                    .catch(error => {
+                        console.log('Error updating:', error);
+                    });
+            })
+            .catch(function (error) {
+                // handle error
+                consconsole.log(error);
+
+            })
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, paddingBottom: 80 }}>
-            <ScrollView>
+            <ScrollView ref={scrollViewRef} style={styles.container}>
+                <NavigationHeader rightIcon={require('../assets/icon/Back.png')} leftIcon={require('../assets/icon/goToCart.png')} />
 
-                <NavigationHeader rightIcon={require('../assets/icon/Back.png')} />
 
                 {/* image list */}
                 <FlatList
@@ -68,7 +149,7 @@ const ProductInfor = ({ route }) => {
                     borderBottomColor: '#3131332b',
                 }]}>
                     <Text style={styles.DescriptionTitle}>Description</Text>
-                    <TouchableOpacity onPress={() => setShowDecription(!showDecription)}>
+                    <TouchableOpacity onPress={() => { setShowDecription(!showDecription); scrollToEnd() }}>
                         {
                             showDecription ?
                                 <Image source={require('../assets/icon/ArrowDown.png')} /> :
@@ -88,7 +169,10 @@ const ProductInfor = ({ route }) => {
                     borderBottomColor: '#3131332b',
                 }]}>
                     <Text style={[styles.DescriptionTitle]}>Similar Product</Text>
-                    <TouchableOpacity onPress={() => setShowSimilarProduct(!showSimilarProduct)}>
+                    <TouchableOpacity onPress={() => {
+                        setShowSimilarProduct(!showSimilarProduct);
+                        scrollToEnd();
+                    }}>
                         {
                             showSimilarProduct ?
                                 <Image source={require('../assets/icon/ArrowDown.png')} /> :
@@ -98,12 +182,13 @@ const ProductInfor = ({ route }) => {
                 </View>
                 {
                     showSimilarProduct && <FlatList
+                        ref={flatListRef}
                         style={styles.SimilarProduct}
                         horizontal={true}
                         data={similarProduct}
                         renderItem={({ item, index }) =>
                             <View style={{ padding: 5 }}>
-                                <ProductItem key={index} product={item} />
+                                <ProductItem key={index} product={item} action={() => scrollToStart()} />
                             </View>
                         }
                         showsHorizontalScrollIndicator={false}
@@ -114,36 +199,43 @@ const ProductInfor = ({ route }) => {
 
 
             </ScrollView >
-            <View style={styles.AddToCartBtnContainer}>
-                <TouchableOpacity style={styles.AddToCartBtn} onPress={() => { }}>
-                    <Text style={styles.AddToCartText}>Add To Cart</Text>
+            <View style={styles.BtnContainer}>
+                <TouchableOpacity style={styles.Buttom} onPress={() => addToCart()}>
+                    <Text style={styles.BtnText}>Add To Cart  ({state.quantityProductInCart})</Text>
                 </TouchableOpacity>
 
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
 export default ProductInfor
 
 const styles = StyleSheet.create({
-    AddToCartBtnContainer: {
+    coutCart: {
+        color: '#ffffff',
+        fontWeight: '900'
+    },
+    BtnContainer: {
         alignItems: 'center',
         position: 'absolute',
         bottom: 20,
         width: Dimensions.get('window').width,
 
     },
-    AddToCartText: {
+    BtnText: {
         color: '#ffffff',
+        fontSize: 20,
+        fontWeight: 'bold'
     },
-    AddToCartBtn: {
+    Buttom: {
         height: 70,
         width: 0.8 * Dimensions.get('window').width,
         backgroundColor: '#343434',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30
+        borderRadius: 30,
+        flexDirection: 'row'
 
     },
     SimilarProduct: {

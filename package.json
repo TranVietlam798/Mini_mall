@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^7.3.10",
     "axios": "^1.9.0",
     "axois": "^0.0.1-security",
+    "mongoose": "^8.15.0",
     "react": "19.0.0",
     "react-native": "0.79.1",
     "react-native-safe-area-context": "^5.4.0",

@@ -13,9 +13,14 @@ const NavigationHeader = ({ title, rightIcon, leftIcon }) => {
                     </TouchableOpacity> :
                     <View style={styles.Icon}></View>
             }
-            <Text>{title}</Text>
+            <Text style={styles.title}>{title}</Text>
             {
-                leftIcon ? <Image style={styles.Icon} source={leftIcon} /> : <View style={styles.Icon}></View>
+                leftIcon ?
+                    <TouchableOpacity style={styles.Buttom} onPress={() => navigator.navigate('Main', { screen: 'Cart' })}>
+                        <Image style={styles.Icon} source={leftIcon} />
+                    </TouchableOpacity> :
+                    <View style={styles.Icon}></View>
+
             }
         </View>
     )
@@ -24,17 +29,26 @@ const NavigationHeader = ({ title, rightIcon, leftIcon }) => {
 export default NavigationHeader
 
 const styles = StyleSheet.create({
-    Icon: {
+    Buttom: {
+        height: 45,
+        width: 45,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    Icon: {
         height: 36,
         width: 36,
         resizeMode: 'stretch',
-        marginHorizontal: '5%'
+
     },
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        width: '100%'
     }
 })
