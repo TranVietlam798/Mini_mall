@@ -1,15 +1,17 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import NavigationHeader from '../components/NavigationHeader'
 import { useNavigation } from '@react-navigation/native'
 import OrderItem from '../components/OrderItem'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 const OrderDetailScreen = ({ route }) => {
     const navigator = useNavigation()
     return (
         <SafeAreaView>
             <NavigationHeader rightIcon={require('../assets/icon/Back.png')} title={'Order ' + route.params.name} />
-            <ScrollView >
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ marginBottom: 200 }}>
                     <View style={styles.ImageContainer}>
                         <Image source={require('../assets/image/BeingDelivered.png')} />
@@ -30,15 +32,15 @@ const OrderDetailScreen = ({ route }) => {
 
                             <View style={[styles.container, { paddingVertical: 8 }]}>
                                 <Text style={styles.Title}>Order number</Text>
-                                <Text style={[styles.Content, {width:'50%'}]}>{route.params.name}</Text>
+                                <Text style={[styles.Content, { width: '50%' }]}>{route.params.name}</Text>
                             </View>
                             <View style={[styles.container, { paddingVertical: 8 }]}>
                                 <Text style={styles.Title}>Tracking Number</Text>
-                                <Text style={[styles.Content, {width:'50%'}]}>LM{route.params.trackingNumber}</Text>
+                                <Text style={[styles.Content, { width: '50%' }]}>LM{route.params.trackingNumber}</Text>
                             </View>
                             <View style={[styles.container, { paddingVertical: 8 }]}>
                                 <Text style={styles.Title}>Delivery address</Text>
-                                <Text style={[styles.Content, {width:'50%'}]}>{route.params.address}</Text>
+                                <Text style={[styles.Content, { width: '50%' }]}>{route.params.address}</Text>
                             </View>
                         </View>
 
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     Content: {
         fontSize: 14,
         color: '#000000',
-        textAlign:'right'
+        textAlign: 'right'
     },
     Title: {
         fontSize: 14,

@@ -3,22 +3,13 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 const OrderItem = ({ name, date, quantyti, subtotal, trackingNumber, details, address }) => {
-    // const date = new Date();
-
-    // // Get day of month (1-31)
-    // const day = date.getDate();
-
-    // // Get month (0-11 where 0 = January)
-    // const month = date.getMonth();
-
-    // // Get full year (e.g., 2023)
-    // const year = date.getFullYear();
+ 
     const navigator = useNavigation()
     return (
         <View style={styles.OrderItemContaner}>
             <View style={[styles.container, { marginTop: 19 }]}>
                 <Text style={styles.OrderTitle}>Order {name}</Text>
-                <Text style={styles.OrderDate}>{date.slice(0, '2025-05-30'.length).replaceAll('-', '/')}</Text>
+                <Text style={styles.OrderDate}>{date}</Text>
             </View>
 
             <View style={styles.container}>

@@ -1,9 +1,11 @@
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Categories from '../components/Categories'
 import axios from 'axios'
 import ProductItem from '../components/ProductItem'
 import Promotion from '../constans/Promotion'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 import { useIsFocused } from '@react-navigation/native'
 import { useContextState } from '../Contexts/StateContext'
 
@@ -42,7 +44,7 @@ const HomeScreen = () => {
     }, [selectedCategory])
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.Container}>
                 {/* header */}
                 <Text style={styles.Header} >MINI MALL</Text>
@@ -127,10 +129,11 @@ const styles = StyleSheet.create({
     },
     Header: {
         color: '#000000',
-        fontSize: '30',
+        fontSize: 30,
         fontWeight: '900',
         textAlign: 'center',
         width: '100%',
+
 
     },
     Categories: {
@@ -144,6 +147,6 @@ const styles = StyleSheet.create({
         width: "90%",
         resizeMode: 'stretch',
         marginTop: '8%',
-        borderRadius: "5%"
+        borderRadius: 20
     }
 })

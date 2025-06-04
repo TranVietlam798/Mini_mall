@@ -119,7 +119,7 @@ const ProductInfor = ({ route }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, paddingBottom: 80 }}>
-            <ScrollView ref={scrollViewRef} style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef} style={styles.container}>
                 <NavigationHeader rightIcon={require('../assets/icon/Back.png')} leftIcon={require('../assets/icon/goToCart.png')} />
 
 

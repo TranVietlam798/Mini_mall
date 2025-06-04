@@ -1,9 +1,9 @@
-import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import NavigationHeader from '../components/NavigationHeader'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
-import { projectRoot } from '../../metro.config'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CheckoutScreen = ({ route }) => {
 
@@ -20,7 +20,7 @@ const CheckoutScreen = ({ route }) => {
 
   const DeleteProducts = async () => {
     route.params.products.map(async (product) => {
-      
+
 
       await axios.delete('https://api.escuelajs.co/api/v1/products/' + product.id)
         .then(response => {
@@ -104,7 +104,7 @@ const CheckoutScreen = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ height: 1000 }}>
           <NavigationHeader title={'Check out'} rightIcon={require('../assets/icon/Back.png')} />
           <View style={styles.ImageContainer}>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
     fontSize: 20,
+    color: 'black'
   },
   ImageContainer: {
     width: '100%',

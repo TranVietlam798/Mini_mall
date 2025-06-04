@@ -1,7 +1,9 @@
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import NavigationHeader from '../components/NavigationHeader'
 import { useNavigation } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 const OrderCompletedScreen = () => {
     const navigator = useNavigation()

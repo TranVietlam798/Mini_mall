@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomeScreen from '../screens/HomeScreen'
@@ -63,6 +63,11 @@ const MainScreen = ({ route }) => {
             })
 
 
+
+
+    }, [state.flat, isFocused])
+
+    useEffect(() => {
         axios.get('https://api.escuelajs.co/api/v1/categories/')
             .then((response) => {
                 let quantityOrder = 0;
@@ -87,8 +92,8 @@ const MainScreen = ({ route }) => {
             .catch(() => {
                 consconsole.log(error);
             })
+    }, [isFocused])
 
-    }, [state.flat, isFocused])
 
     return (
         <Tab.Navigator
@@ -102,9 +107,13 @@ const MainScreen = ({ route }) => {
                     tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) =>
                         focused ? (
-                            <Image source={require('../assets/icon/HomeFocused.png')} />
+                            <View style={{ marginBottom: 5 }}>
+                                <Image source={require('../assets/icon/HomeFocused.png')} />
+                            </View>
                         ) : (
-                            <Image source={require('../assets/icon/Home.png')} />
+                            <View style={{ marginBottom: 5 }}>
+                                <Image source={require('../assets/icon/Home.png')} />
+                            </View>
                         ),
                     tabBarIconStyle: {
                         margin: '10%'
@@ -120,17 +129,17 @@ const MainScreen = ({ route }) => {
                     tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) =>
                         focused ? (
-                            <View style={{ flexDirection: 'row', }}>
+                            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                                 <Image source={require('../assets/icon/CartFocused.png')} />
-                                <View style={{ height: 16, width: 16, borderWidth: 0.3, borderColor: '#cf6112ff', backgroundColor: '#cf6112ff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text  >{state.quantityProductInCart}</Text>
+                                <View>
+                                    <Text style={styles.quantityFocused} >{state.quantityProductInCart}</Text>
                                 </View>
                             </View>
                         ) : (
-                            <View style={{ flexDirection: 'row', }}>
+                            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                                 <Image source={require('../assets/icon/Cart.png')} />
-                                <View style={{ height: 16, width: 16, borderWidth: 0.3, borderColor: '#cf6112ff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: '#cf6112ff' }} >{state.quantityProductInCart}</Text>
+                                <View >
+                                    <Text style={styles.quantity} >{state.quantityProductInCart}</Text>
                                 </View>
                             </View>
                         ),
@@ -149,17 +158,17 @@ const MainScreen = ({ route }) => {
                     tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) =>
                         focused ? (
-                            <View style={{ flexDirection: 'row', }}>
+                            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                                 <Image source={require('../assets/icon/OrderFocused.png')} />
-                                <View style={{ height: 16, width: 16, borderWidth: 0.3, borderColor: '#cf6112ff', backgroundColor: '#cf6112ff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text  >{state.quantityOrder}</Text>
+                                <View >
+                                    <Text style={styles.quantityFocused} >{state.quantityOrder}</Text>
                                 </View>
                             </View>
                         ) : (
-                            <View style={{ flexDirection: 'row', }}>
+                            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                                 <Image source={require('../assets/icon/Order.png')} />
-                                <View style={{ height: 16, width: 16, borderWidth: 0.3, borderColor: '#cf6112ff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: '#cf6112ff' }} >{state.quantityOrder}</Text>
+                                <View>
+                                    <Text style={styles.quantity}  >{state.quantityOrder}</Text>
                                 </View>
                             </View>
                         ),
@@ -171,5 +180,31 @@ const MainScreen = ({ route }) => {
         </Tab.Navigator>
     )
 }
+
+const styles = StyleSheet.create({
+    quantityFocused: {
+        backgroundColor: 'red',
+        fontSize: 12,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: '#cf6112ff',
+        backgroundColor: '#cf6112ff',
+        borderRadius: 8,
+        paddingHorizontal: 3,
+        height: 18,
+    },
+    quantity: {
+        backgroundColor: 'red',
+        fontSize: 12,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: '#cf6112ff',
+        backgroundColor: 'transparent',
+        borderRadius: 8,
+        paddingHorizontal: 3,
+        height: 18,
+        color: '#cf6112ff'
+    }
+})
 
 export default MainScreen

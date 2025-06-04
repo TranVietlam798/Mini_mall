@@ -1,9 +1,11 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import NavigationHeader from '../components/NavigationHeader'
 import OrderItem from '../components/OrderItem'
 import axios from 'axios'
 import { useIsFocused } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 const OrderScreen = () => {
 
@@ -12,15 +14,15 @@ const OrderScreen = () => {
 
   useEffect(() => {
     const url = 'https://api.escuelajs.co/api/v1/categories/'
+    let orders = [];
 
     axios.get(url)
       .then((response) => {
-        let orders = [];
-        response.data.map(async (item) => {
+        response.data.map((item) => {
           if (item.name.includes('NewCategoryLam')) {
             const url = 'https://api.escuelajs.co/api/v1/categories/' + item.id + '/products'
-            await axios.get(url)
-              .then(function (response) {
+            axios.get(url)
+              .then((response) => {
 
                 const details = []
 
@@ -31,10 +33,14 @@ const OrderScreen = () => {
                 })
 
                 if (details.length > 0) {
-
+                  const date = item.creationAt.slice(0, '2025-05-30T0000000000000'.length).split('T')
+                  const day = date[0].split('-').reverse().join('/')
+                  const timeArr = date[1].split(':')
+                  const time = [(Number(timeArr[0]) + 7), timeArr[1]].join(':')
                   orders.push({
                     name: item.name.slice('NewCategoryLam'.length, 'NewCategoryLam'.length + 5),
-                    date: item.creationAt,
+                    date: time + '  ' + day,
+                    creationAt: item.creationAt,
                     details: details,
                     trackingNumber: item.image.split('https://placeimg.com/640/480/any'),
                     quantyti: details.reduce((total, num) => total + Number(num.description), 0).toFixed(),
@@ -42,8 +48,8 @@ const OrderScreen = () => {
                     address: item.name.slice('NewCategoryLam'.length + 6)
                   })
                 }
-                orders.sort((a, b) => b.date.localeCompare(a.date));
-                setOrders(orders)
+                orders.sort((a, b) => b.creationAt.localeCompare(a.creationAt));
+
               })
           }
         })
@@ -51,13 +57,17 @@ const OrderScreen = () => {
       .catch(() => {
         consconsole.log(error);
       })
-  }, [])
+    setTimeout(() => {
+      setOrders(orders)
+    }, 1500);
+
+  }, [isFocused])
 
   return (
     <SafeAreaView>
       <NavigationHeader title={"My Orders"} />
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: 100 }}>
           <View style={styles.OrderContainer}>
             {

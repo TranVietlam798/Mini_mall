@@ -1,10 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View, CheckBox, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, CheckBox, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import React, { useEffect, useReducer, useState } from 'react'
 import NavigationHeader from '../components/NavigationHeader'
 import axios from 'axios'
 import ProductCart from '../components/ProductCart'
 import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native'
 import { useContextState } from '../Contexts/StateContext'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 
 
@@ -86,7 +88,7 @@ const CartScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView  >
+            <ScrollView showsVerticalScrollIndicator={false}  >
                 <View style={{ marginBottom: 80 }}>
 
                     <NavigationHeader

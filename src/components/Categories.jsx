@@ -75,6 +75,11 @@ const styles = StyleSheet.create({
 
     },
     selected: {
-        backgroundColor: '#CF6212'
+        backgroundColor: '#CF6212',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 34,
+        width: 34,
+        borderRadius: 17,
     }
 })
