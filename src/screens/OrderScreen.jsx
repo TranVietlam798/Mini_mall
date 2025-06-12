@@ -44,7 +44,7 @@ const OrderScreen = () => {
                     details: details,
                     trackingNumber: item.image.split('https://placeimg.com/640/480/any'),
                     quantyti: details.reduce((total, num) => total + Number(num.description), 0).toFixed(),
-                    subtotal: (details.reduce((total, num) => total + num.price * Number(num.description), 0) * 0.9).toFixed(),
+                    subtotal: (details.reduce((total, num) => total + num.price * Number(num.description), 0)).toFixed(),
                     address: item.name.slice('NewCategoryLam'.length + 6)
                   })
                 }

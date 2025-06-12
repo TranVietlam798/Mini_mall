@@ -84,7 +84,7 @@ const OrderDetailScreen = ({ route }) => {
                             </View>
                             <View style={[styles.container, { paddingVertical: 10, borderTopWidth: 1, borderColor: '#00000038' }]}>
                                 <Text style={[styles.Title, { fontSize: 18 }]}>Total</Text>
-                                <Text style={[styles.Content, { fontSize: 18 }]}>${route.params.subtotal}</Text>
+                                <Text style={[styles.Content, { fontSize: 18 }]}>${route.params.subtotal * 0.9}</Text>
                             </View>
                         </View>
 
