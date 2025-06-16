@@ -62,7 +62,7 @@ const OrderDetailScreen = ({ route }) => {
                                     <Text style={[styles.Title, { fontSize: 18 }]}>{product.title.slice(4).split('LamTran')}</Text>
                                     <View style={[styles.container, { width: '40%' }]}>
                                         <Text style={[styles.Content, { fontSize: 18 }]}>x{product.description}</Text>
-                                        <Text style={[styles.Content, { fontSize: 18 }]}>${product.price * product.description}</Text>
+                                        <Text style={[styles.Content, { fontSize: 18 }]}>${product.price}</Text>
                                     </View>
                                 </View>
                             )}
